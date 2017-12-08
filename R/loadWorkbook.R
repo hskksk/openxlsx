@@ -212,15 +212,8 @@ loadWorkbook <- function(file, xlsxFile = NULL){
     
     ## read in and get <si> nodes
     vals <- getNodes(xml = sharedStrings, tagIn = "<si>")
-    
-    if("<si><t/></si>" %in% vals){
-      vals[vals == "<si><t/></si>"] <- "<si><t>NA</t></si>"
-      Encoding(vals) <- "UTF-8"
-      attr(vals, "uniqueCount") <- uniqueCount - 1L      
-    }else{
-      Encoding(vals) <- "UTF-8"
-      attr(vals, "uniqueCount") <- uniqueCount
-    }
+    Encoding(vals) <- "UTF-8"
+    attr(vals, "uniqueCount") <- uniqueCount
     
     wb$sharedStrings <- vals
     
