@@ -214,9 +214,16 @@ WorkSheet$methods(get_post_sheet_data = function(){
   }
   
   
-  if(length(extLst) > 0)
-    xml <- paste0(xml, sprintf('<extLst>%s</extLst>', paste(extLst, collapse = "")), collapse = "")
-  
+  if(length(extLst) > 0){
+    is_conditional_formatting = grep("conditionalFormatting", extLst, fixed=T)
+    extLst_no_conditional_formatting = extLst[!is_conditional_formatting]
+    extLst_conditional_formatting = extLst[is_conditional_formatting]
+    xml <- paste0(xml
+                  , sprintf('<extLst>%s<ext uri="{78C0D931-6437-407d-A8EE-F0AAD7539E65}" xmlns:x14="http://schemas.microsoft.com/office/spreadsheetml/2009/9/main"><x14:conditionalFormattings>%s</x14:conditionalFormattings></ext></extLst>'
+                            , paste(extLst_no_conditional_formatting, collapse = "")
+                            , paste(extLst_conditional_formatting, collapse = ""))
+                  , collapse = "")
+  }
   
   
   xml <- paste0(xml, "</worksheet>")
